@@ -1,0 +1,32 @@
+def dijkstra(graph, start, end):
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    visited = set()
+
+    current_node = start
+    while current_node != end:
+        for neighbor, cost in graph[current_node].items():
+            if neighbor not in visited:
+                new_distance = distances[current_node] + cost
+                distances[neighbor] = min(distances[neighbor], new_distance)
+        visited.add(current_node)
+        unvisited = {node: distances[node] for node in graph if node not in visited}
+        if not unvisited:
+            break
+        current_node = min(unvisited, key=unvisited.get)
+
+    return distances[end]
+
+graph = {
+    'A': {'B': 1, 'C': 4, 'D': 10},
+    'B': {'E': 3},
+    'C': {'D': 4, 'F': 2},
+    'D': {'E': 1},
+    'E': {'F': 5},
+    'F': {}
+}
+
+start = 'A'
+end = 'F'
+
+print(dijkstra(graph, start, end))
